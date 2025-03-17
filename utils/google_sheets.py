@@ -7,7 +7,7 @@ from typing import List, Any, Union
 import logging
 from utils.logger import logger
 import sys
-
+from datetime import datetime
 
 SCOPES = [
     "https://spreadsheets.google.com/feeds",
@@ -36,7 +36,7 @@ class GoogleSheetsClient:
 
     def append_row(self, sheet_name: str, row_data: List[Any]) -> bool:
         """
-        Добавление строки в указанный лист.
+        Добавление строки в указанный лист с временной меткой.
         Если лист не существует, он создается. Добавляет заголовки, если лист пуст.
 
         Args:
@@ -56,20 +56,24 @@ class GoogleSheetsClient:
             all_values = worksheet.get_all_values()
             if not all_values or (len(all_values) == 1 and not all_values[0]):
                 if sheet_name == "SearchRequests":
-                    headers = ["Property Type", "Rooms", "District", "Budget", "Condition", "Phone", "Telegram"]
+                    headers = ["Property Type", "Rooms", "District", "Budget", "Condition", "Phone", "Telegram", "Timestamp"]
                 else:
-                    headers = ["Phone", "Telegram"]
+                    headers = ["Phone", "Telegram", "Timestamp"]
                 worksheet.append_row(headers)
+
+            # Добавляем временную метку в конец строки
+            timestamp = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+            row_data_with_timestamp = row_data + [timestamp]
 
             all_rows = worksheet.get_all_values()
             next_row = len(all_rows) + 1
 
             headers_count = len(worksheet.row_values(1)) if all_rows else 6
-            if len(row_data) < headers_count:
-                row_data.extend([""] * (headers_count - len(row_data)))
+            if len(row_data_with_timestamp) < headers_count:
+                row_data_with_timestamp.extend([""] * (headers_count - len(row_data_with_timestamp)))
 
-            worksheet.update(f"A{next_row}", [row_data])
-            logger.info(f"Successfully appended row to {sheet_name} at row {next_row}: {row_data}")
+            worksheet.update(f"A{next_row}", [row_data_with_timestamp])
+            logger.info(f"Successfully appended row to {sheet_name} at row {next_row}: {row_data_with_timestamp}")
             return True
         except Exception as e:
             logger.info(f"Error appending row to {sheet_name}: {str(e)}")
