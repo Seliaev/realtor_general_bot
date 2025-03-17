@@ -20,10 +20,9 @@ def get_property_type_keyboard() -> ReplyKeyboardMarkup:
             ],
             [
                 KeyboardButton(text=get_text("main_menu", "historic")),
-                KeyboardButton(text=get_text("main_menu", "back"))
+                KeyboardButton(text=get_text("main_menu", "cancel"))
             ]
         ],
-        resize_keyboard=True,
-        one_time_keyboard=True  # Клавиатура исчезнет после выбора
+        resize_keyboard=True
     )
     return keyboard

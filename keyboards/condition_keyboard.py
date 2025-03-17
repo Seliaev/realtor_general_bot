@@ -9,7 +9,7 @@ def get_condition_keyboard():
                 KeyboardButton(text="С ремонтом")
             ],
             [
-                KeyboardButton(text="Назад")
+                KeyboardButton(text="Отмена")
             ]
         ],
         resize_keyboard=True

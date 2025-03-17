@@ -18,7 +18,7 @@ def get_rooms_keyboard() -> ReplyKeyboardMarkup:
             ],
             [
                 KeyboardButton(text="4+"),
-                KeyboardButton(text="Назад")
+                KeyboardButton(text="Отмена")
             ]
         ],
         resize_keyboard=True

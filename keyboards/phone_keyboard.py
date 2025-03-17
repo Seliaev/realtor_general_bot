@@ -15,7 +15,7 @@ def get_phone_keyboard() -> ReplyKeyboardMarkup:
             [
                 KeyboardButton(text="Поделиться контактом", request_contact=True),
                 KeyboardButton(text="Отказаться"),
-                KeyboardButton(text="Назад")
+                KeyboardButton(text="Отмена")
             ]
         ],
         resize_keyboard=True,

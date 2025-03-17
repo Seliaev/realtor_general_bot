@@ -18,7 +18,7 @@ def get_budget_keyboard() -> ReplyKeyboardMarkup:
             [
                 KeyboardButton(text="10-20 млн"),
                 KeyboardButton(text="20+ млн"),
-                KeyboardButton(text="Назад")
+                KeyboardButton(text="Отмена")
             ]
         ],
         resize_keyboard=True

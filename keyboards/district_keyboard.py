@@ -19,7 +19,7 @@ def get_district_keyboard() -> ReplyKeyboardMarkup:
             [
                 KeyboardButton(text="Восток"),
                 KeyboardButton(text="Запад"),
-                KeyboardButton(text="Назад")
+                KeyboardButton(text="Отмена")
             ]
         ],
         resize_keyboard=True
