@@ -17,7 +17,7 @@ SCOPES = [
 class GoogleSheetsClient:
     """
     Класс для взаимодействия с Google Sheets через gspread.
-    Позволяет добавлять строки, создавать листы и читать данные.
+    Позволяет добавлять строки, создавать листы, читать данные.
     """
     def __init__(self) -> None:
         """
@@ -62,7 +62,7 @@ class GoogleSheetsClient:
                 worksheet.append_row(headers)
 
             # Добавляем временную метку в конец строки
-            timestamp = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             row_data_with_timestamp = row_data + [timestamp]
 
             all_rows = worksheet.get_all_values()
@@ -76,7 +76,7 @@ class GoogleSheetsClient:
             logger.info(f"Successfully appended row to {sheet_name} at row {next_row}: {row_data_with_timestamp}")
             return True
         except Exception as e:
-            logger.info(f"Error appending row to {sheet_name}: {str(e)}")
+            logger.error(f"Error appending row to {sheet_name}: {str(e)}")
             return False
 
     def create_sheet(self, sheet_name: str) -> None:
@@ -90,7 +90,7 @@ class GoogleSheetsClient:
             self.spreadsheet.add_worksheet(title=sheet_name, rows=100, cols=20)
             logger.info(f"Created new sheet: {sheet_name}")
         except gspread.exceptions.APIError as e:
-            logger.info(f"Error creating sheet {sheet_name}: {str(e)}")
+            logger.error(f"Error creating sheet {sheet_name}: {str(e)}")
 
     def read_all_data(self, sheet_name: str) -> Union[List[List[str]], List]:
         """
@@ -106,7 +106,7 @@ class GoogleSheetsClient:
             worksheet = self.spreadsheet.worksheet(sheet_name)
             return worksheet.get_all_values()
         except Exception as e:
-            logger.info(f"Error reading data from {sheet_name}: {str(e)}")
+            logger.error(f"Error reading data from {sheet_name}: {str(e)}")
             return []
 
 gs_client = GoogleSheetsClient()

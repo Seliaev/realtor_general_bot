@@ -3,3 +3,4 @@ gspread>=5.0.0
 oauth2client>=4.0.0
 environs>=9.0.0
 pyyaml==6.0.2
+aiosqlite>=0.17.0

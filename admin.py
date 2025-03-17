@@ -1,12 +1,12 @@
-# admin_bot/admin.py
+# admin_bot/main.py
 import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
-
-from admin_bot.handlers import start, control, messaging
 from config import ADMIN_BOT_TOKEN, ADMIN_IDS
+from utils.database import db
 from utils.logger import logger
 
+from admin_bot.handlers import start, control, messaging
 
 async def main() -> None:
     """
@@ -16,6 +16,9 @@ async def main() -> None:
     """
     bot = Bot(token=ADMIN_BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
     dp = Dispatcher()
+
+    # Инициализация базы данных
+    await db.connect()
 
     # Регистрация роутеров
     dp.include_routers(
@@ -45,6 +48,7 @@ async def main() -> None:
     finally:
         await dp.stop_polling()
         await bot.session.close()
+        await db.close()  # Закрываем базу данных
         logger.info("Админ-бот завершил работу.")
 
 if __name__ == "__main__":

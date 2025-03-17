@@ -9,6 +9,7 @@ import os
 import logging
 from utils.logger import logger
 from config import BOT_TOKEN, bot_status, update_bot_status, STATUS_FILE
+from utils.database import db
 
 from handlers import start, property_search, property_sell, excursion, callback_handlers
 
@@ -42,6 +43,9 @@ async def main() -> None:
     bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
     dp = Dispatcher()
 
+    # Инициализация базы данных
+    await db.connect()
+
     # Регистрация middleware для проверки паузы
     dp.update.middleware(PauseMiddleware())
 
@@ -60,6 +64,7 @@ async def main() -> None:
     finally:
         await dp.stop_polling()
         await bot.session.close()
+        await db.close()  # Закрываем базу данных
         logger.info("Основной бот завершил работу.")
 
 if __name__ == "__main__":

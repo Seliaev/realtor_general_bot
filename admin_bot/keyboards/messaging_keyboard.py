@@ -10,8 +10,8 @@ def get_messaging_keyboard() -> InlineKeyboardMarkup:
     """
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="Массово", callback_data="mass"),
-            InlineKeyboardButton(text="Избирательно", callback_data="selective")
+            InlineKeyboardButton(text="Массово", callback_data="mass")
+            #InlineKeyboardButton(text="Избирательно", callback_data="selective")
         ]
     ])
     return keyboard
