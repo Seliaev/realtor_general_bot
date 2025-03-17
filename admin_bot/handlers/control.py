@@ -2,9 +2,11 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
+import logging
+from utils.logger import logger
 
 from admin_bot.keyboards.control_keyboard import get_control_keyboard
-from config import bot_status, ADMIN_IDS  # Импорт из config.py
+from config import bot_status, ADMIN_IDS, update_bot_status  # Обновленный импорт
 
 router = Router()
 
@@ -32,11 +34,12 @@ async def toggle_bot(callback: CallbackQuery, state: FSMContext) -> None:
 
     Args:
         callback (CallbackQuery): Объект callback-запроса от инлайн-кнопки.
-        state (FSMContext): Контекст состояния FSM для управления состоянием.
+        state (FSMContext): Контекст состояния FSM (не используется в данном случае).
     """
     if callback.from_user.id in ADMIN_IDS:
-        bot_status['is_active'] = not bot_status['is_active']
-        await callback.answer(f"Бот {'включен' if bot_status['is_active'] else 'выключен'}")
+        new_status = not bot_status['is_active']
+        update_bot_status(new_status)  # Обновляем статус через функцию
+        await callback.answer(f"Бот {'включен' if new_status else 'выключен'}")
         await callback.message.edit_text(
             f"Текущий статус бота: {'Включен' if bot_status['is_active'] else 'Выключен'}",
             reply_markup=get_control_keyboard()

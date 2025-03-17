@@ -1,10 +1,12 @@
-# admin_bot/main.py
+# admin_bot/admin.py
 import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 
-from config import ADMIN_BOT_TOKEN, ADMIN_IDS
 from admin_bot.handlers import start, control, messaging
+from config import ADMIN_BOT_TOKEN, ADMIN_IDS
+from utils.logger import logger
+
 
 async def main() -> None:
     """
@@ -34,7 +36,7 @@ async def main() -> None:
             try:
                 await bot.send_message(admin_id, "Админ-бот запущен. Используйте /start.")
             except Exception:
-                print(f"Не удалось отправить сообщение админу с ID {admin_id}")
+                logger.error(f"Не удалось отправить сообщение админу с ID {admin_id}")
 
     dp.startup.register(on_startup)
 
@@ -43,10 +45,10 @@ async def main() -> None:
     finally:
         await dp.stop_polling()
         await bot.session.close()
-        print("Админ-бот завершил работу.")
+        logger.info("Админ-бот завершил работу.")
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("Админ-бот остановлен пользователем.")
+        logger.info("Админ-бот остановлен пользователем.")
